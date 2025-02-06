@@ -31,7 +31,7 @@ function getTimestamp() {
 function scanPort(target, port) {
   return new Promise((resolve, reject) => {
     const socket = new net.Socket()
-    socket.setTimeout(1000) // Set timeout to 1 second
+    socket.setTimeout(100) // Set timeout to 1 second
 
     socket.on('connect', () => {
       socket.destroy()
