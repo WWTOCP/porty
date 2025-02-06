@@ -57,9 +57,7 @@ async function scanPorts(target, ports) {
   for (const port of ports) {
     process.stdout.write(`\rscanning port: ${chalk.yellow(port)}`)
     const isOpen = await scanPort(target, port)
-    if(isOpen) {
-      results.push({ port, isOpen })
-    }
+    results.push({ port, isOpen })
   }
   return results
 }
@@ -111,7 +109,10 @@ scanPorts(target, ports)
     console.log(`\n=====================\n${chalk.yellow(`Port scan results`)}\n=====================`)
     console.log(`Scanned ${ports.length} ports. ${openPorts} open, ${closedPorts} closed.`)
     results.forEach(result => {
-      console.log(`Port ${chalk.yellow(result.port)}: ${result.isOpen ? chalk.green('Open') : chalk.red('Closed')}`)
+      // only display the open ports
+      if(result.isOpen) {
+        console.log(`Port ${chalk.yellow(result.port)} ${chalk.green('Open')}`)
+      }
     })
   })
   .catch(err => console.error('Error:', err))
