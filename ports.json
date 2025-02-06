@@ -1,0 +1,35 @@
+{
+    "commonPorts": [
+        { "port": 21, "protocol": "FTP", "description": "File Transfer Protocol" },
+        { "port": 22, "protocol": "SSH", "description": "Secure Shell (Remote Login)" },
+        { "port": 23, "protocol": "Telnet", "description": "Remote Login (Insecure)" },
+        { "port": 25, "protocol": "SMTP", "description": "Simple Mail Transfer Protocol (Email Sending)" },
+        { "port": 53, "protocol": "DNS", "description": "Domain Name System (TCP for zone transfers)" },
+        { "port": 80, "protocol": "HTTP", "description": "Web Traffic (Unencrypted)" },
+        { "port": 110, "protocol": "POP3", "description": "Post Office Protocol (Email Retrieval)" },
+        { "port": 143, "protocol": "IMAP", "description": "Internet Message Access Protocol (Email)" },
+        { "port": 443, "protocol": "HTTPS", "description": "Secure Web Traffic (SSL/TLS)" },
+        { "port": 445, "protocol": "SMB", "description": "Windows File Sharing" },
+        { "port": 3389, "protocol": "RDP", "description": "Remote Desktop Protocol (Windows Remote Access)" },
+        { "port": 179, "protocol": "BGP", "description": "Border Gateway Protocol (Internet Routing)" },
+        { "port": 389, "protocol": "LDAP", "description": "Lightweight Directory Access Protocol" },
+        { "port": 636, "protocol": "LDAPS", "description": "Secure LDAP" },
+        { "port": 500, "protocol": "IKE", "description": "IPsec VPN (Internet Key Exchange)" },
+        { "port": 4500, "protocol": "NAT-T", "description": "NAT Traversal for VPN" },
+        { "port": 1723, "protocol": "PPTP", "description": "Point-to-Point Tunneling Protocol (VPN)" },
+        { "port": 1433, "protocol": "MSSQL", "description": "Microsoft SQL Server" },
+        { "port": 1521, "protocol": "Oracle DB", "description": "Oracle Database" },
+        { "port": 27017, "protocol": "MongoDB", "description": "NoSQL Database" },
+        { "port": 25565, "protocol": "Minecraft", "description": "Game Server" },
+        { "port": 8080, "protocol": "HTTP Proxy", "description": "Alternative Web Server Port" },
+        { "port": 8443, "protocol": "HTTPS Proxy", "description": "Secure Web Traffic" },
+        { "port": 1883, "protocol": "MQTT", "description": "IoT Messaging Protocol" },
+        { "port": 8883, "protocol": "MQTT Secure", "description": "MQTT with SSL" },
+        { "port": 502, "protocol": "Modbus", "description": "Industrial Control System (ICS)" },
+        { "port": 47808, "protocol": "BACnet", "description": "Building Automation & HVAC Control" },
+        { "port": 9090, "protocol": "Prometheus", "description": "Monitoring & Metrics API" },
+        { "port": 10250, "protocol": "Kubelet", "description": "Kubernetes Node Agent" },
+        { "port": 3128, "protocol": "Squid Proxy", "description": "Web Proxy for Caching" }
+    ]
+}
+  

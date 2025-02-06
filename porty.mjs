@@ -2,6 +2,7 @@ import net from 'net'
 import chalk from 'chalk' // Install with `npm install chalk`
 import ping from 'ping'
 import dns from 'dns/promises'
+import fs from 'fs'
 
 function prettyDateTimeinPacificTimeZone(datetimeString) {
   const dateTimeOptions = {
@@ -31,7 +32,7 @@ function getTimestamp() {
 function scanPort(target, port) {
   return new Promise((resolve, reject) => {
     const socket = new net.Socket()
-    socket.setTimeout(100) // Set timeout to 1 second
+    socket.setTimeout(500) // Set timeout to 1 second
 
     socket.on('connect', () => {
       socket.destroy()
@@ -52,11 +53,12 @@ function scanPort(target, port) {
   })
 }
 
-async function scanPorts(target, ports) {
+async function scanPorts(target, portsToScan) {
   const results = []
-  for (const port of ports) {
-    process.stdout.write(`\rscanning port: ${chalk.yellow(port)}`)
-    const isOpen = await scanPort(target, port)
+  for (const port of portsToScan.sort(p => p.protocol)) {
+  //portsToScan.forEach(async port => {
+    process.stdout.write(`\rscanning port: ${chalk.yellow(port.port)}`)
+    const isOpen = await scanPort(target, port.port)
     results.push({ port, isOpen })
   }
   return results
@@ -94,26 +96,43 @@ const target = args[0] || '127.0.0.1' // Replace with the target IP or hostname
 // TCP port range is from 0 to 65535 (2 ^ 16)
 const startPort = parseInt(args[1], 10) || 0
 const endPort = parseInt(args[2], 10) || (args[2] > startPort ? args[2]: startPort)
-const ports = Array.from({ length: endPort - startPort + 1 }, (_, i) => startPort + i)
+let portsData = {}
 
+if (args.length < 2) {
+  console.log(chalk.yellow("No port range provided, using predefined common ports."));
+  portsData = JSON.parse(fs.readFileSync('ports.json', 'utf8'));
+} else {
+  portsData.commonPorts = Array.from({ length: endPort - startPort + 1 }, (_, i) => ({
+    port: startPort + i,
+    protocol: "Unknown", // Since we don't have protocol details for ranges
+    description: "Scanned Port"
+  }));
+}
 await scanICMP(target)
 
 console.log(chalk.white(`Starting TCP port scan against ${target} at ${chalk.magenta(getTimestamp())}....`))
 console.log(chalk.white(`Starting at TCP port: ${startPort} and finishing at TCP port: ${endPort}...`))
 
-scanPorts(target, ports)
+
+/*portsData.commonPorts.forEach(port => {
+  console.log(`port #: ${port.port}`)
+})*/
+
+scanPorts(target, portsData.commonPorts)
   .then(results => {
     const openPorts = results.filter(o => o.isOpen).length;
     const closedPorts = results.filter(o => !o.isOpen).length;
 
     console.log(`\n=====================\n${chalk.yellow(`Port scan results`)}\n=====================`)
-    console.log(`Scanned ${ports.length} ports. ${openPorts} open, ${closedPorts} closed.`)
+    console.log(`Scanned ${portsData.commonPorts.length} ports. ${openPorts} open, ${closedPorts} closed.`)
     results.forEach(result => {
       // only display the open ports
       if(result.isOpen) {
-        console.log(`Port ${chalk.yellow(result.port)} ${chalk.green('Open')}`)
+        console.log(`Port ${chalk.yellow(result.port.port)} "${result.port.protocol}" ${chalk.green('Open')}`)
       }
     })
   })
   .catch(err => console.error('Error:', err))
 
+
+//console.log(portsData.ports);
