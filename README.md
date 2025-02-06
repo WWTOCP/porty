@@ -19,3 +19,6 @@ node porty.mjs
 node porty.mjs msn.com 80
 node porty.mjs google.com 20 21
 ```
+
+## Example Output
+![Example image](readme-screenshot.jpg)
