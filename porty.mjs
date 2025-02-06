@@ -55,7 +55,7 @@ function scanPort(target, port) {
 
 async function scanPorts(target, portsToScan) {
   const results = []
-  for (const port of portsToScan.sort(p => p.protocol)) {
+  for (const port of portsToScan.sort( (a, b) => a.port - b.port)) {
   //portsToScan.forEach(async port => {
     process.stdout.write(`\rscanning port: ${chalk.yellow(port.port)}`)
     const isOpen = await scanPort(target, port.port)
