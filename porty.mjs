@@ -97,11 +97,11 @@ const target = args[0] || '127.0.0.1' // Replace with the target IP or hostname
 const startPort = parseInt(args[1], 10) || 0
 const endPort = parseInt(args[2], 10) || (args[2] > startPort ? args[2]: startPort)
 let portsData = {}
-
 if (args.length < 2) {
   console.log(chalk.yellow("No port range provided, using predefined common ports."));
   portsData = JSON.parse(fs.readFileSync('ports.json', 'utf8'));
 } else {
+  console.log(chalk.white(`Starting at TCP port: ${startPort} and finishing at TCP port: ${endPort}...`))
   portsData.commonPorts = Array.from({ length: endPort - startPort + 1 }, (_, i) => ({
     port: startPort + i,
     protocol: "Unknown", // Since we don't have protocol details for ranges
@@ -109,15 +109,7 @@ if (args.length < 2) {
   }));
 }
 await scanICMP(target)
-
 console.log(chalk.white(`Starting TCP port scan against ${target} at ${chalk.magenta(getTimestamp())}....`))
-console.log(chalk.white(`Starting at TCP port: ${startPort} and finishing at TCP port: ${endPort}...`))
-
-
-/*portsData.commonPorts.forEach(port => {
-  console.log(`port #: ${port.port}`)
-})*/
-
 scanPorts(target, portsData.commonPorts)
   .then(results => {
     const openPorts = results.filter(o => o.isOpen).length;
